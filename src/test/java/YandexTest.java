@@ -2,15 +2,12 @@ import com.codeborne.selenide.ElementsCollection;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import java.sql.SQLOutput;
 import java.util.*;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class YandexTest {
-    Yandex yandex = new Yandex();
-
 
     @Test
     public void searchingFruitMice(){
@@ -42,7 +39,9 @@ public class YandexTest {
         }
 
         //формируем коллекцию ElementsCollection по имени класса и атрибутов
-        responses = $$(By.className("link")).filterBy(cssClass("organic__url")).filterBy(cssClass("link_cropped_no"))
+        responses = $$(By.className("link"))
+                .filterBy(cssClass("organic__url"))
+                .filterBy(cssClass("link_cropped_no"))
                 .filterBy(attribute("data-counter"));
 
         //Нужные нам ссылки находятся между начальной и конечной подстроками
@@ -53,7 +52,8 @@ public class YandexTest {
         //выделяем из них ссылки на страницы, помещаем их в коллекции
         for(int i = 0; i < responses.size(); i++){
             String str = responses.get(i).toString();
-            str = str.substring((str.indexOf(linkSubStringBeginning)), str.indexOf(linkSubStringEnd)).substring(linkSubStringBeginning.length());
+            str = str.substring((str.indexOf(linkSubStringBeginning)),
+                    str.indexOf(linkSubStringEnd)).substring(linkSubStringBeginning.length());
             links.add(str);
         }
 
