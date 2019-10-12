@@ -1,39 +1,33 @@
 package YandexRequests;
 
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-
-import java.util.List;
-
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class Search {
 
-    public StringBuilder findFirstInstances(String requests) throws InterruptedException {
+    public void findFirstInstances(String request){
         String result;
-        ElementsCollection requestsCollection;
-        SelenideElement firstRequest;
-        String value;
-        int start;
-        int finish;
+        ElementsCollection widgetsCollection;
 
-        $(By.className("input__control")).setValue(requests);
+        //помещаю в поиск нужное слово
+        $(By.className("input__control")).setValue(request);
+        //убеждаюсь, что drop-down меню появилось
+        $(By.className("i-bem")).shouldBe(visible);
+        //убеждаюсь, что все элементы меню загрузились
+        $(By.className("suggest2__content")).shouldBe(exist);
+        //вынимаю все элемнеты, где есть виджет с погодой
+        widgetsCollection = $$(By.className("suggest2-item__fact"));
+        //получаю первый элемент там, где их больше 0
+        if(widgetsCollection.size() > 0){
+            result = "По запросу " + request + " получено значение: " + widgetsCollection.get(0).text();
+        }
+        else {
+            result = "Не найдено значений в градусах Цельсия!";
+        }
 
-        Thread.sleep(1000);
-
-        requestsCollection = $$(By.className("suggest2-item"));
-        //нужно весь список вытащить с виджетами погоды, а потом достать первый  из них
-
-
-/*
-        firstRequest = requestsCollection.get(0);
-        start = firstRequest.toString().indexOf("\"val\":\"") + 7;
-        finish = firstRequest.toString().indexOf("\"}}");
-        value = firstRequest.toString().substring(start, finish);
-*/
-
-        return null;
+        System.out.println(result);
     }
 }
