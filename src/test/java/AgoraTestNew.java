@@ -1,79 +1,44 @@
-import AFTestValues.TestValues;
-import AgoraFreight.Cargo;
-import AgoraFreight.Cookie;
-import AgoraFreight.Destination;
-import AgoraFreight.Flag;
+import AgoraFreight.*;
 
-import AFTestValues.CargoVolumeCalc;
-import AFTestValues.CargoDimensions;
-
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
-import org.openqa.selenium.By;
 import org.testng.annotations.*;
 
-import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class AgoraTestNew {
-    private Flag flag = new Flag();
-    private Destination destination = new Destination();
-    private Cargo cargo = new Cargo();
-    private CargoVolumeCalc cargoVolumeCalc;
-    private CargoDimensions cargoDimensions =  new CargoDimensions();
-    private TestValues testValues = new TestValues();
-    private Cookie cookie = new Cookie();
+
+    private AgoraPageObject agora = new AgoraPageObject();
 
     //Сначала заполняем необходимые тестовые значения
-    public void initiateValues(){
-        testValues.setLength(100);
-        testValues.setHeight(200);
-        testValues.setWidth(20);
-        testValues.setWeight(200);
-        testValues.setDepartureOptionsCity("Shanghai, Shanghai, China");
-        testValues.setArrivalDropDownLetter("G");
-        testValues.setArrivalDropDownCity("Gabrovo, Болгария");
+    @DataProvider(name = "values")
+    public Object[][] initiateValues(){
+        return new Object[][] {{100, 200, 20, 200, "Shanghai, Shanghai, China", "G", "Gabrovo, Bulgaria"},};
     }
-    @Test//(invocationCount = 10)
-    public void test() throws InterruptedException{
 
-        this.initiateValues();
+    @Test(invocationCount = 10, dataProvider = "values")
+    public void test(int length, int width, int height, int weight,
+                     String departureCity, String arrivalDropDownLetter, String arrivalDropDownCity){
         Configuration.startMaximized = true;
         open("https://agorafreight.com/book/wizard");
 
-        cookie.closeCookieInfo();
-        //добавить строки поиска города отправки - прибытия
-        cargoDimensions.setLength(testValues.getLength());
-        cargoDimensions.setHeight(testValues.getHeight());
-        cargoDimensions.setWidth(testValues.getWidth());
-        cargoDimensions.setWeight(testValues.getWeight());
-
-        flag.clickOnFlag();
-        flag.getEnglishFlag();
-
-        destination.findDestinations();
-        destination.findArrivalCoutry();Thread.sleep(500);
-        destination.arrivalCountry();
-        destination.departureOptions(testValues.getDepartureOptionsCity());Thread.sleep(500);
-        destination.arrivalDropDown(testValues.getArrivalDropDownLetter(), testValues.getArrivalDropDownCity());
-
-        cargo.setLength(cargoDimensions.getLength());
-        cargo.setWidth(cargoDimensions.getWidth());
-        cargo.setHeight(cargoDimensions.getHeight());
-        cargo.setWeight(cargoDimensions.getWeight());
-
-        //кликнуть и перейти на завершение заказа
-        $$(By.className("align-self-end")).findBy(text("Search")).click();
-        Thread.sleep(3000);
-
-        cargoVolumeCalc = new CargoVolumeCalc(cargoDimensions.getLength(), cargoDimensions.getWidth(), cargoDimensions.getHeight());
-        cargoVolumeCalc.getPackageVolume();
-
-        $$(By.className("col-6")).filterBy(text("Volume")).shouldHave(CollectionCondition.texts(cargoVolumeCalc.getPackageVolume()));
-
-        $$(By.className("col-6")).filterBy(text("Weight")).shouldHave(CollectionCondition.texts(cargoDimensions.getWeightAsString()));
-
+        agora.clickOnFlag();
+        agora.getEnglishFlag();
+        agora.closeCookieInfo();
+        agora.findDestinations();
+        agora.findArrivalCoutry();
+        agora.arrivalCountry();
+        agora.departureOptions(departureCity);
+        agora.arrivalDropDown(arrivalDropDownLetter, arrivalDropDownCity);
+        agora.setLength(length);
+        agora.setWidth(width);
+        agora.setHeight(height);
+        agora.setWeight(weight);
+        agora.clickSearch();
+        agora.checkPackageVolume(length, width, height);
+        agora.checkPackageWeight(weight);
+        /*
         //getDepartureOptionsCity - здесь надо строку вырезать до запятой, т.к. город - это первое слово
         $$(By.className("line px-0 col-12")).filterBy(text("From"));//.shouldHave(CollectionCondition.texts(cargoDimensions.getWeightAsString()));
+        //добавить города прибытия и отправки*/
     }
 }
