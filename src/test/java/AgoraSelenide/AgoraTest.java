@@ -1,4 +1,4 @@
-package YandexTest;
+package AgoraSelenide;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;

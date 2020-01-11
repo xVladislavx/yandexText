@@ -1,3 +1,5 @@
+package AgoraSelenide;
+
 import AgoraFreight.*;
 
 import com.codeborne.selenide.Configuration;
