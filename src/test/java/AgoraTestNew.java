@@ -39,6 +39,7 @@ public class AgoraTestNew {
         /*
         //getDepartureOptionsCity - здесь надо строку вырезать до запятой, т.к. город - это первое слово
         $$(By.className("line px-0 col-12")).filterBy(text("From"));//.shouldHave(CollectionCondition.texts(cargoDimensions.getWeightAsString()));
-        //добавить города прибытия и отправки*/
+        //добавить города прибытия и отправки
+        */
     }
 }

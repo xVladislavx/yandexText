@@ -1,3 +1,5 @@
+package YandexTest;
+
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;

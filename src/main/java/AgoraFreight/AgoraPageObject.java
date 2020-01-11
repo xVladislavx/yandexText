@@ -20,18 +20,21 @@ public class AgoraPageObject {
     /////////FLAG BLOCK///////////
     //////////////////////////////
     public void clickOnFlag() {
-        flag = $(By.className("header__buttons_language-switcher"));
+        //flag = $(By.className("header__buttons_language-switcher"));
+        flag = $(By.xpath("//*[@id=\"react-select-2--value-item\"]/div/span"));
         flag.click();
     }
-
+    //*[@id="react-select-2--value"]/div[2]
     public void getEnglishFlag() {
-        $(By.className("Select-menu-outer"))
-                .find(By.id("react-select-2--option-0")).click();
+        /*$(By.className("Select-menu-outer"))
+                .find(By.id("react-select-2--option-0")).click();*/
+        $(By.xpath("//*[@id=\"react-select-2--option-0\"]")).click();
     }
 
     public void getRussianFlag() {
-        $(By.className("Select-menu-outer"))
-                .find(By.id("react-select-2--option-1")).click();
+/*        $(By.className("Select-menu-outer"))
+                .find(By.id("react-select-2--option-1")).click();*/
+        $(By.xpath("//*[@id=\"react-select-2--option-1\"]")).click();
     }
 
     //////////////////////////////
@@ -39,7 +42,7 @@ public class AgoraPageObject {
     //////////////////////////////
     public void closeCookieInfo(){
         if($$(By.className("fa-close")).size() > 0){
-            $$(By.className("fa-close")).get(0).click();
+            $$(By.className("fa-close")).get(0).click();//"cookieInfo__close" works
         }
     }
 
